@@ -18,23 +18,6 @@
 
 ---
 
-## 📋 Table of Contents
-
-- [About](#about)
-- [Key Features](#key-features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
-- [Design](#design)
-- [Screenshots](#screenshots)
-- [Usage](#usage)
-- [API Integration](#api-integration)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-
----
-
 ## 🎯 About
 
 **MediPredict** is an innovative AI-powered healthcare platform that helps users predict future medical costs and estimate insurance premiums based on their health profile and medical history. Built with modern web technologies, it provides accurate predictions using advanced machine learning algorithms.
