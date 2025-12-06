@@ -16,6 +16,8 @@ import {
   Hospital,
   LayoutDashboard,
   Settings,
+  Menu,
+  X,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -63,6 +65,7 @@ import {
 
 export function DashboardPage({ onNavigate }) {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({
     age: "",
     gender: "",
@@ -181,25 +184,47 @@ export function DashboardPage({ onNavigate }) {
   ];
 
   return (
-    <div className="flex h-screen bg-[#F5F7FA]">
+    <div className="flex h-screen bg-[#F5F7FA] overflow-hidden">
+      {/* Mobile Overlay */}
+      {isMobileSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsMobileSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r flex flex-col">
+      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r flex flex-col transform transition-transform duration-300 ease-in-out ${
+        isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      }`}>
         <div className="p-6 border-b">
-          <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#005BEA] to-[#00C6FB]">
-              <Activity className="h-6 w-6 text-white" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#005BEA] to-[#00C6FB]">
+                <Activity className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-[#005BEA] to-[#00C6FB] bg-clip-text text-transparent">
+                MediPredict
+              </span>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-[#005BEA] to-[#00C6FB] bg-clip-text text-transparent">
-              MediPredict
-            </span>
+            {/* Close button for mobile */}
+            <button
+              onClick={() => setIsMobileSidebarOpen(false)}
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              <X className="h-5 w-5 text-gray-600" />
+            </button>
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {sidebarItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => {
+                setActiveTab(item.id);
+                setIsMobileSidebarOpen(false);
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all cursor-pointer ${
                 activeTab === item.id
                   ? "bg-gradient-to-r from-[#005BEA] to-[#00C6FB] text-white shadow-lg"
@@ -227,22 +252,31 @@ export function DashboardPage({ onNavigate }) {
       <div className="flex-1 overflow-auto">
         {/* Top Navigation */}
         <header className="bg-white border-b sticky top-0 z-10">
-          <div className="flex items-center justify-between px-8 py-4">
-            <div>
-              <h1 className="text-2xl font-bold">Welcome back, User!</h1>
-              <p className="text-sm text-gray-600">
-                Here's your health prediction overview
-              </p>
+          <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center gap-3">
+              {/* Hamburger Menu for Mobile */}
+              <button
+                onClick={() => setIsMobileSidebarOpen(true)}
+                className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+              >
+                <Menu className="h-6 w-6 text-gray-600" />
+              </button>
+              <div>
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold">Welcome back, User!</h1>
+                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">
+                  Here's your health prediction overview
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-4">
-              <Avatar className="h-10 w-10 bg-gradient-to-br from-[#005BEA] to-[#00C6FB] cursor-pointer hover:scale-110 transition-transform">
-                <AvatarFallback className="text-white">JD</AvatarFallback>
+              <Avatar className="h-8 w-8 sm:h-10 sm:w-10 bg-gradient-to-br from-[#005BEA] to-[#00C6FB] cursor-pointer hover:scale-110 transition-transform">
+                <AvatarFallback className="text-white text-sm">JD</AvatarFallback>
               </Avatar>
             </div>
           </div>
         </header>
 
-        <div className="p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           {/* Dashboard Tab */}
           {activeTab === "dashboard" && (
             <div className="space-y-6">

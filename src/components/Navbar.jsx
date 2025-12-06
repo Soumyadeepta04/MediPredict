@@ -1,17 +1,21 @@
-import React from "react";
-import { Activity } from "lucide-react";
+import React, { useState } from "react";
+import { Activity, Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
 
 export function Navbar({ onNavigate, currentPage }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const handleNavigation = (page) => {
     if (onNavigate) {
       onNavigate(page);
     }
+    setIsMobileMenuOpen(false);
   };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        {/* Logo */}
         <div 
           className="flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform duration-300" 
           onClick={() => handleNavigation('home')}
@@ -19,11 +23,12 @@ export function Navbar({ onNavigate, currentPage }) {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#005BEA] to-[#00C6FB] hover:shadow-lg transition-shadow">
             <Activity className="h-6 w-6 text-white" />
           </div>
-          <span className="bg-gradient-to-r from-[#005BEA] to-[#00C6FB] bg-clip-text text-transparent">
+          <span className="text-lg font-bold bg-gradient-to-r from-[#005BEA] to-[#00C6FB] bg-clip-text text-transparent">
             MediPredict
           </span>
         </div>
 
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
           <Button 
             variant="ghost"
@@ -55,7 +60,56 @@ export function Navbar({ onNavigate, currentPage }) {
             </Button>
           </div>
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+        >
+          {isMobileMenuOpen ? (
+            <X className="h-6 w-6 text-gray-600" />
+          ) : (
+            <Menu className="h-6 w-6 text-gray-600" />
+          )}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden border-t bg-white">
+          <div className="container mx-auto px-4 py-4 space-y-2">
+            <Button 
+              variant="ghost"
+              onClick={() => handleNavigation('home')}
+              className={`w-full justify-start transition-all duration-300 cursor-pointer ${currentPage === 'home' ? 'text-[#005BEA] bg-blue-50' : 'text-gray-600 hover:text-[#005BEA] hover:bg-gray-50'}`}
+            >
+              Home
+            </Button>
+            <Button 
+              variant="ghost"
+              onClick={() => handleNavigation('about')}
+              className={`w-full justify-start transition-all duration-300 cursor-pointer ${currentPage === 'about' ? 'text-[#005BEA] bg-blue-50' : 'text-gray-600 hover:text-[#005BEA] hover:bg-gray-50'}`}
+            >
+              About
+            </Button>
+            <div className="pt-2 space-y-2">
+              <Button 
+                variant="outline"
+                onClick={() => handleNavigation('auth')}
+                className="w-full cursor-pointer hover:bg-gray-50 transition-all duration-300"
+              >
+                Login
+              </Button>
+              <Button 
+                className="w-full bg-gradient-to-r from-[#005BEA] to-[#00C6FB] hover:opacity-90 transition-all duration-300 cursor-pointer shadow-md hover:shadow-lg"
+                onClick={() => handleNavigation('auth')}
+              >
+                Sign Up
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
