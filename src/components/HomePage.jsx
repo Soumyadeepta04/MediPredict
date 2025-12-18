@@ -1,75 +1,90 @@
 import React from "react";
 
-import { 
-  Activity, 
-  Brain, 
-  CheckCircle2, 
-  FileText, 
-  Shield, 
-  Sparkles, 
+import {
+  Activity,
+  Brain,
+  CheckCircle2,
+  FileText,
+  Shield,
+  Sparkles,
   TrendingUp,
-  Upload
+  Upload,
 } from "lucide-react";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 export function HomePage({ onNavigate, isLoggedIn }) {
   const features = [
     {
       icon: Brain,
-      title: "AI-Powered Predictions",
-      description: "Advanced machine learning algorithms analyze your medical data to predict future healthcare costs with high accuracy."
+      title: "AI-Powered Premium Prediction",
+      description:
+        "Advanced machine learning models process user data to accurately predict insurance premium amounts."
     },
     {
       icon: Shield,
-      title: "Insurance Estimation",
-      description: "Get accurate insurance premium estimates based on your health profile and medical history."
+      title: "Personalized Insurance Estimation",
+      description:
+        "Generate tailored insurance premium estimates based on individual health and demographic information."
     },
     {
       icon: FileText,
-      title: "Medical Reports Analysis",
-      description: "Upload and analyze your medical reports, prescriptions, and health records to get comprehensive insights."
+      title: "Instant Premium Calculation",
+      description:
+        "Receive instant insurance premium predictions through a simple and user-friendly input process."
     },
     {
       icon: TrendingUp,
-      title: "Cost Breakdown",
-      description: "Detailed breakdown of predicted medical expenses including consultations, tests, medications, and procedures."
+      title: "Reliable & Consistent Results",
+      description:
+        "Leverage trained models to deliver stable and consistent insurance premium predictions."
     }
-  ];
+  ];  
 
   const howItWorks = [
     {
       number: "1",
       icon: Upload,
-      title: "Upload Medical Records",
-      description: "Upload your medical reports, prescriptions, and health records to our platform."
+      title: "Upload Details",
+      description:
+        "Upload your demographic, medical and lifestyle details to our platform.",
     },
     {
       number: "2",
       icon: Brain,
       title: "AI Analysis",
-      description: "Our advanced AI analyzes your data using machine learning models trained on millions of medical records."
+      description:
+        "Our advanced AI analyzes your data using machine learning models trained on millions of records.",
     },
     {
       number: "3",
       icon: FileText,
       title: "Get Predictions",
-      description: "Receive detailed cost predictions and insurance estimates tailored to your health profile."
-    }
+      description:
+        "Receive detailed insurance premium cost estimates tailored to your health profile.",
+    },
   ];
 
   const benefits = [
     {
       icon: CheckCircle2,
-      title: "Financial Planning",
-      description: "Plan your healthcare expenses in advance with accurate cost predictions."
+      title: "Better Financial Planning",
+      description:
+        "Anticipate insurance premium costs in advance and plan your finances with greater confidence.",
     },
     {
       icon: Shield,
-      title: "Insurance Guidance",
-      description: "Make informed decisions about health insurance coverage based on predicted costs."
-    }
+      title: "Informed Insurance Decisions",
+      description:
+        "Choose suitable insurance plans and coverage levels using data-driven premium predictions.",
+    },
   ];
 
   return (
@@ -82,32 +97,40 @@ export function HomePage({ onNavigate, isLoggedIn }) {
               <div className="inline-block">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#005BEA]/10 to-[#00C6FB]/10 border border-[#005BEA]/20">
                   <Sparkles className="h-4 w-4 text-[#005BEA]" />
-                  <span className="text-sm text-[#005BEA]">AI-Powered Healthcare Platform</span>
+                  <span className="text-sm text-[#005BEA]">
+                    AI-Powered Insurance Prediction Platform
+                  </span>
                 </div>
               </div>
-              
+
               <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Predict Your <span className="bg-gradient-to-r from-[#005BEA] to-[#00C6FB] bg-clip-text text-transparent">Medical Costs</span> with AI
+                Predict Your{" "}
+                <span className="bg-linear-to-r from-[#005BEA] to-[#00C6FB] bg-clip-text text-transparent">
+                  Insurance Premium Costs
+                </span>{" "}
+                with AI
               </h1>
 
               <p className="text-lg text-gray-600">
-                Upload your medical reports and get instant AI-powered predictions for future medical costs and insurance premium estimates with advanced machine learning technology.
+                Upload your details and get instant AI-powered predictions for
+                future insurance premium estimates with advanced machine
+                learning technology.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
+                <Button
                   size="lg"
                   className="bg-gradient-to-r from-[#005BEA] to-[#00C6FB] hover:opacity-90 hover:scale-105 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl"
-                  onClick={() => onNavigate(isLoggedIn ? 'dashboard' : 'auth')}
+                  onClick={() => onNavigate(isLoggedIn ? "dashboard" : "auth")}
                 >
                   <Activity className="mr-2 h-5 w-5" />
                   Predict Medical Cost
                 </Button>
-                <Button 
+                <Button
                   size="lg"
                   variant="outline"
                   className="hover:scale-105 transition-all duration-300 cursor-pointer hover:border-[#005BEA] hover:text-[#005BEA]"
-                  onClick={() => onNavigate('auth')}
+                  onClick={() => onNavigate("auth")}
                 >
                   Login / Register
                 </Button>
@@ -148,7 +171,7 @@ export function HomePage({ onNavigate, isLoggedIn }) {
         {/* Background Decorative Elements */}
         <div className="absolute top-10 left-10 w-72 h-72 bg-[#005BEA]/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#00C6FB]/5 rounded-full blur-3xl"></div>
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <div className="inline-block mb-4">
@@ -160,23 +183,21 @@ export function HomePage({ onNavigate, isLoggedIn }) {
               Powerful Features for Healthcare Predictions
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Comprehensive healthcare prediction tools designed to help you make informed medical decisions
+              Comprehensive healthcare prediction tools designed to help you
+              make informed medical decisions
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <div 
-                key={index} 
-                className="group relative cursor-pointer"
-              >
+              <div key={index} className="group relative cursor-pointer">
                 {/* Gradient Background on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#005BEA]/10 to-[#00C6FB]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
+
                 <Card className="relative border-2 border-gray-200 hover:border-[#005BEA]/30 transition-all duration-300 h-full hover:shadow-xl hover:-translate-y-2">
                   {/* Decorative circle */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#005BEA]/10 to-[#00C6FB]/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-                  
+
                   <CardContent className="pb-4">
                     {/* Icon Container with Animation */}
                     <div className="relative mb-6">
@@ -186,7 +207,7 @@ export function HomePage({ onNavigate, isLoggedIn }) {
                       {/* Decorative ring */}
                       <div className="absolute -inset-2 border-2 border-[#005BEA]/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
-                    
+
                     <CardTitle className="text-2xl mb-3 group-hover:text-[#005BEA] transition-colors duration-300">
                       {feature.title}
                     </CardTitle>
@@ -260,18 +281,19 @@ export function HomePage({ onNavigate, isLoggedIn }) {
               Why Choose MediPredict?
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Advanced AI technology backed by comprehensive Indian healthcare data
+              Advanced AI technology backed by comprehensive Indian healthcare
+              data
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {benefits.map((benefit, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-[#005BEA]/5 to-[#00C6FB]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
+
                 <div className="relative">
                   {/* Icon container */}
                   <div className="mb-6 relative inline-block">
@@ -281,7 +303,7 @@ export function HomePage({ onNavigate, isLoggedIn }) {
                     {/* Decorative ring */}
                     <div className="absolute -inset-3 border-2 border-dashed border-[#005BEA]/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
-                  
+
                   <h3 className="text-2xl font-bold mb-3 group-hover:text-[#005BEA] transition-colors duration-300">
                     {benefit.title}
                   </h3>
@@ -305,12 +327,13 @@ export function HomePage({ onNavigate, isLoggedIn }) {
             Ready to Predict Your Medical Costs?
           </h2>
           <p className="text-lg mb-8 text-white/90 max-w-2xl mx-auto">
-            Join thousands of users who are making smarter healthcare decisions with MediPredict
+            Join thousands of users who are making smarter healthcare decisions
+            with MediPredict
           </p>
-          <Button 
+          <Button
             size="lg"
             className="bg-white text-[#005BEA] hover:bg-gray-100 hover:scale-105 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl"
-            onClick={() => onNavigate(isLoggedIn ? 'dashboard' : 'auth')}
+            onClick={() => onNavigate(isLoggedIn ? "dashboard" : "auth")}
           >
             Get Started Now
           </Button>

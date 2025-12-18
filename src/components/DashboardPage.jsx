@@ -1,24 +1,17 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Activity,
   BarChart3,
   FileText,
-  Home,
   LogOut,
   Shield,
-  User,
-  Upload,
-  Calendar,
-  DollarSign,
-  AlertCircle,
-  TrendingUp,
-  Hospital,
   LayoutDashboard,
   Settings,
   Menu,
   X,
+  TrendingUp,
 } from "lucide-react";
+
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -36,9 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Textarea } from "./ui/textarea";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { Badge } from "./ui/badge";
 import {
   Table,
   TableBody,
@@ -47,9 +38,8 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+
 import {
-  LineChart,
-  Line,
   BarChart,
   Bar,
   XAxis,
@@ -66,158 +56,90 @@ import {
 export function DashboardPage({ onNavigate }) {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [showInsuranceResults, setShowInsuranceResults] = useState(false);
+
   const [formData, setFormData] = useState({
     age: "",
     gender: "",
-    disease: "",
-    insurancePolicy: "",
-    medicineCost: "",
+    height: "",
+    weight: "",
+    bmi: "",
+    smoking: "",
+    region: "",
   });
 
-  const [showResults, setShowResults] = useState(false);
-  const [showPredictionResults, setShowPredictionResults] = useState(false);
-  const [showInsuranceResults, setShowInsuranceResults] = useState(false);
+  /* ---------- MOCK DATA (Insurance Only) ---------- */
 
-  // Mock data for charts
-  const monthlyCostData = [
-    { month: "Jan", cost: 5200 },
-    { month: "Feb", cost: 5500 },
-    { month: "Mar", cost: 4800 },
-    { month: "Apr", cost: 6100 },
-    { month: "May", cost: 5900 },
-    { month: "Jun", cost: 6300 },
+  const monthlyPremiumData = [
+    { month: "Jan", premium: 3800 },
+    { month: "Feb", premium: 4000 },
+    { month: "Mar", premium: 4200 },
+    { month: "Apr", premium: 4500 },
+    { month: "May", premium: 4700 },
+    { month: "Jun", premium: 4800 },
   ];
 
-  const insuranceBreakdown = [
-    { category: "Covered", amount: 75 },
-    { category: "Out of Pocket", amount: 25 },
+  const premiumHistory = [
+    { id: 1, date: "2024-01-15", premium: "₹3,800" },
+    { id: 2, date: "2024-02-01", premium: "₹4,200" },
+    { id: 3, date: "2024-03-10", premium: "₹4,500" },
+    { id: 4, date: "2024-04-05", premium: "₹4,800" },
   ];
 
-  const costBreakdown = [
-    {
-      id: 1,
-      category: "Consultation",
-      cost: "$2,500",
-      hospital: "City Medical Center",
-    },
-    {
-      id: 2,
-      category: "Lab Tests",
-      cost: "$1,000",
-      hospital: "HealthLab Pro",
-    },
-    {
-      id: 3,
-      category: "Medication",
-      cost: "$3,000",
-      hospital: "Metro Pharmacy",
-    },
-    {
-      id: 4,
-      category: "Follow-up",
-      cost: "$1,000",
-      hospital: "City Medical Center",
-    },
-    { id: 5, category: "Imaging", cost: "$1,500", hospital: "RadiologyPlus" },
+  const sidebarItems = [
+    { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
+    { icon: TrendingUp, label: "Premium Predictor", id: "premium" },
+    { icon: Settings, label: "Settings", id: "settings" },
   ];
-
-  const patientRecords = [
-    {
-      id: 1,
-      name: "John Doe",
-      disease: "Diabetes Type 2",
-      prediction: "$1,500/month",
-      date: "2024-01-15",
-      risk: "Medium",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      disease: "Hypertension",
-      prediction: "$1,200/month",
-      date: "2024-01-20",
-      risk: "Low",
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      disease: "Heart Disease",
-      prediction: "$2,800/month",
-      date: "2024-02-01",
-      risk: "High",
-    },
-    {
-      id: 4,
-      name: "Sarah Williams",
-      disease: "Asthma",
-      prediction: "$1,200/month",
-      date: "2024-02-10",
-      risk: "Low",
-    },
-  ];
-
-  const handlePredictionSubmit = (e) => {
-    e.preventDefault();
-    setShowPredictionResults(true);
-  };
 
   const handleInsuranceSubmit = (e) => {
     e.preventDefault();
+
     const h = parseFloat(formData.height);
     const w = parseFloat(formData.weight);
     if (h && w) {
-      const bmi = (w / ((h / 100) * (h / 100))).toFixed(1);
+      const bmi = (w / (h / 100) ** 2).toFixed(1);
       setFormData({ ...formData, bmi });
     }
     setShowInsuranceResults(true);
   };
 
-  const handleLogout = () => {
-    onNavigate("home");
-  };
-
-  const sidebarItems = [
-    { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
-    { icon: FileText, label: "Predictions", id: "predictions" },
-    { icon: TrendingUp, label: "Analytics", id: "analytics" },
-    { icon: Settings, label: "Settings", id: "settings" },
-  ];
-
   return (
     <div className="flex h-screen bg-[#F5F7FA] overflow-hidden">
       {/* Mobile Overlay */}
       {isMobileSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setIsMobileSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r flex flex-col transform transition-transform duration-300 ease-in-out ${
-        isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-      }`}>
-        <div className="p-6 border-b">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#005BEA] to-[#00C6FB]">
-                <Activity className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-[#005BEA] to-[#00C6FB] bg-clip-text text-transparent">
-                MediPredict
-              </span>
+      <aside
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r flex flex-col transform transition-transform duration-300 ${
+          isMobileSidebarOpen
+            ? "translate-x-0"
+            : "-translate-x-full lg:translate-x-0"
+        }`}
+      >
+        <div className="p-6 border-b flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-[#005BEA] to-[#00C6FB]">
+              <Activity className="text-white" />
             </div>
-            {/* Close button for mobile */}
-            <button
-              onClick={() => setIsMobileSidebarOpen(false)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-            >
-              <X className="h-5 w-5 text-gray-600" />
-            </button>
+            <span className="text-xl font-bold bg-gradient-to-r from-[#005BEA] to-[#00C6FB] bg-clip-text text-transparent">
+              MediPredict
+            </span>
           </div>
+          <button
+            onClick={() => setIsMobileSidebarOpen(false)}
+            className="lg:hidden"
+          >
+            <X />
+          </button>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+        <nav className="flex-1 p-4 space-y-2">
           {sidebarItems.map((item) => (
             <button
               key={item.id}
@@ -225,439 +147,121 @@ export function DashboardPage({ onNavigate }) {
                 setActiveTab(item.id);
                 setIsMobileSidebarOpen(false);
               }}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${
                 activeTab === item.id
-                  ? "bg-gradient-to-r from-[#005BEA] to-[#00C6FB] text-white shadow-lg"
-                  : "text-gray-600 hover:bg-gray-100 hover:shadow-md"
+                  ? "bg-gradient-to-r from-[#005BEA] to-[#00C6FB] text-white"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               <item.icon className="h-5 w-5" />
-              <span>{item.label}</span>
+              {item.label}
             </button>
           ))}
         </nav>
 
         <div className="p-4 border-t">
           <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 hover:shadow-md transition-all cursor-pointer"
+            onClick={() => onNavigate("home")}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50"
           >
-            <LogOut className="h-5 w-5" />
-            <span>Logout</span>
+            <LogOut />
+            Logout
           </button>
         </div>
       </aside>
 
-      {/* Main Content */}
+      {/* Main */}
       <div className="flex-1 overflow-auto">
-        {/* Top Navigation */}
+        {/* Header */}
         <header className="bg-white border-b sticky top-0 z-10">
-          <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex justify-between px-6 py-4">
             <div className="flex items-center gap-3">
-              {/* Hamburger Menu for Mobile */}
               <button
+                className="lg:hidden"
                 onClick={() => setIsMobileSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
               >
-                <Menu className="h-6 w-6 text-gray-600" />
+                <Menu />
               </button>
               <div>
-                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold">Welcome back, User!</h1>
-                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">
-                  Here's your health prediction overview
+                <h1 className="text-xl font-bold">Welcome back!</h1>
+                <p className="text-sm text-gray-600">
+                  Insurance premium prediction overview
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Avatar className="h-8 w-8 sm:h-10 sm:w-10 bg-gradient-to-br from-[#005BEA] to-[#00C6FB] cursor-pointer hover:scale-110 transition-transform">
-                <AvatarFallback className="text-white text-sm">JD</AvatarFallback>
-              </Avatar>
-            </div>
+            <Avatar className="bg-gradient-to-br from-[#005BEA] to-[#00C6FB]">
+              <AvatarFallback className="text-white">JD</AvatarFallback>
+            </Avatar>
           </div>
         </header>
 
-        <div className="p-4 sm:p-6 lg:p-8">
-          {/* Dashboard Tab */}
+        <div className="p-6 space-y-6">
+          {/* DASHBOARD */}
           {activeTab === "dashboard" && (
-            <div className="space-y-6">
-              {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Monthly Medical Cost */}
-                <Card className="border-2 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer">
-                  <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Monthly Medical Cost
-                    </CardTitle>
-                    <DollarSign className="h-4 w-4 text-[#005BEA]" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">₹11,200</div>
-                    <p className="text-xs text-gray-600 mt-1">
-                      <span className="text-green-600">↑ 8.2%</span> from last
-                      month
-                    </p>
-                  </CardContent>
-                </Card>
-
-                {/* Insurance Premium Cost */}
-                <Card className="border-2 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer">
-                  <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Insurance Premium Cost
-                    </CardTitle>
-                    <Shield className="h-4 w-4 text-[#00C6FB]" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">₹12,000/year</div>
-                    <p className="text-xs text-gray-600 mt-1">
-                      Calculated based on your health profile
-                    </p>
-                  </CardContent>
-                </Card>
-
-                {/* Disease Type */}
-                <Card className="border-2 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer">
-                  <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium">Disease Type</CardTitle>
-                    <Activity className="h-4 w-4 text-purple-500" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">Chronic</div>
-                    <p className="text-xs text-gray-600 mt-1">
-                      Long-term management
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Charts */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Monthly Medical Cost Chart */}
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Monthly Medical Cost Trend</CardTitle>
-                    <CardDescription>
-                      Your medical expenses over the last 6 months
-                    </CardDescription>
+                    <CardTitle>Annual Insurance Premium</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-3xl font-bold">
+                    ₹48,000
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Monthly Premium Trend</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <LineChart data={monthlyCostData}>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <BarChart data={monthlyPremiumData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" />
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Line
-                          type="monotone"
-                          dataKey="cost"
-                          stroke="#005BEA"
-                          strokeWidth={2}
-                          name="Medical Cost (₹)"
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </CardContent>
-                </Card>
-
-                {/* Monthly Premium Cost Chart */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Monthly Insurance Premium Trend</CardTitle>
-                    <CardDescription>
-                      Projected monthly premium costs over 6 months
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <BarChart data={monthlyCostData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar
-                          dataKey="cost"
-                          fill="#00C6FB"
-                          name="Premium Cost (₹)"
-                        />
+                        <Bar dataKey="premium" fill="#00C6FB" />
                       </BarChart>
                     </ResponsiveContainer>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* Medical Cost Prediction Table */}
-              <Card className="w-full lg:col-span-2">
-                <CardHeader>
-                  <CardTitle>Medical Cost Predictions</CardTitle>
-                  <CardDescription>
-                    Historical prediction data
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>ID</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Disease</TableHead>
-                        <TableHead className="text-right">
-                          Predicted Monthly Cost (₹)
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {[
-                        {
-                          id: 1,
-                          date: "2024-01-15",
-                          disease: "Diabetes Type 2",
-                          cost: "₹1,500",
-                        },
-                        {
-                          id: 2,
-                          date: "2024-01-20",
-                          disease: "Hypertension",
-                          cost: "₹1,200",
-                        },
-                        {
-                          id: 3,
-                          date: "2024-02-01",
-                          disease: "Heart Disease",
-                          cost: "₹2,800",
-                        },
-                        {
-                          id: 4,
-                          date: "2024-02-10",
-                          disease: "Asthma",
-                          cost: "₹1,200",
-                        },
-                      ].map((item) => (
-                        <TableRow key={item.id}>
-                          <TableCell>{item.id}</TableCell>
-                          <TableCell>{item.date}</TableCell>
-                          <TableCell>{item.disease}</TableCell>
-                          <TableCell className="text-right">
-                            {item.cost}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-
-              {/* Insurance Premium Prediction Table */}
-              <Card className="mt-6 w-full lg:col-span-2">
-                <CardHeader>
-                  <CardTitle>Insurance Premium Predictions</CardTitle>
-                  <CardDescription>
-                    Historical premium predictions
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>ID</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead className="text-right">
-                          Predicted Monthly Premium Cost (₹)
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {[
-                        { id: 1, date: "2024-01-15", premium: "₹1,200" },
-                        { id: 2, date: "2024-02-01", premium: "₹2,900" },
-                        { id: 3, date: "2024-03-10", premium: "₹3,000" },
-                        { id: 4, date: "2024-04-05", premium: "₹4,800" },
-                      ].map((item) => (
-                        <TableRow key={item.id}>
-                          <TableCell>{item.id}</TableCell>
-                          <TableCell>{item.date}</TableCell>
-                          <TableCell className="text-right">
-                            {item.premium}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Predictions Tab */}
-          {activeTab === "predictions" && (
-            <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-[#005BEA]" />
-                    Medical Cost Prediction
-                  </CardTitle>
-                  <CardDescription>
-                    Enter your details to get a predicted monthly medical cost
-                  </CardDescription>
+                  <CardTitle>Premium Prediction History</CardTitle>
                 </CardHeader>
-
                 <CardContent>
-                  <form onSubmit={handlePredictionSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* Age */}
-                      <div className="space-y-2">
-                        <Label htmlFor="age">Age</Label>
-                        <Input
-                          id="age"
-                          type="number"
-                          placeholder="Enter your age"
-                          value={formData.age}
-                          onChange={(e) =>
-                            setFormData({ ...formData, age: e.target.value })
-                          }
-                        />
-                      </div>
-
-                      {/* Gender */}
-                      <div className="space-y-2">
-                        <Label htmlFor="gender">Gender</Label>
-                        <Select
-                          value={formData.gender}
-                          onValueChange={(value) =>
-                            setFormData({ ...formData, gender: value })
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select gender" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="male">Male</SelectItem>
-                            <SelectItem value="female">Female</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      {/* Disease Name */}
-                      <div className="space-y-2 md:col-span-2">
-                        <Label htmlFor="disease">Disease Name</Label>
-                        <Input
-                          id="disease"
-                          placeholder="e.g., Diabetes, Hypertension"
-                          value={formData.disease}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              disease: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-
-                      {/* File Upload (Multiple, No Limit) */}
-                      <div className="space-y-2 md:col-span-2">
-                        <Label htmlFor="medical-file">
-                          Upload Medical Reports
-                        </Label>
-                        <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-[#005BEA] transition-colors relative">
-                          <input
-                            id="medical-file"
-                            type="file"
-                            accept=".pdf,.jpg,.jpeg,.png"
-                            multiple
-                            className="absolute inset-0 opacity-0 cursor-pointer"
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                files: Array.from(e.target.files),
-                              })
-                            }
-                          />
-                          <Upload className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-                          <p className="text-sm text-gray-600">
-                            Click to upload or drag and drop
-                          </p>
-                          <p className="text-xs text-gray-400 mt-1">
-                            PDF, JPG, PNG (No file limit)
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <Button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-[#005BEA] to-[#00C6FB] hover:opacity-90"
-                      size="lg"
-                    >
-                      <BarChart3 className="mr-2 h-5 w-5" />
-                      Generate Prediction
-                    </Button>
-                  </form>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead className="text-right">
+                          Monthly Premium
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {premiumHistory.map((row) => (
+                        <TableRow key={row.id}>
+                          <TableCell>{row.id}</TableCell>
+                          <TableCell>{row.date}</TableCell>
+                          <TableCell className="text-right">
+                            {row.premium}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
-
-              {/* --- Results Section --- */}
-              {showPredictionResults && (
-                <Card className="border-2 border-[#005BEA]">
-                  <CardHeader>
-                    <CardTitle className="text-[#005BEA]">
-                      Prediction Results
-                    </CardTitle>
-                    <CardDescription>
-                      Based on your submitted information
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent className="space-y-6">
-                    {/* Estimated Cost Only */}
-                    <div className="p-4 bg-gradient-to-br from-[#005BEA]/10 to-[#00C6FB]/10 rounded-lg text-center">
-                      <p className="text-sm text-gray-600 mb-1">
-                        Estimated Monthly Cost
-                      </p>
-                      <p className="text-3xl text-[#005BEA] font-bold">
-                        ₹12,500
-                      </p>
-                    </div>
-
-                    {/* Monthly Expenditure Trend */}
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart
-                          data={[
-                            { month: "Jan", cost: 11000 },
-                            { month: "Feb", cost: 11500 },
-                            { month: "Mar", cost: 12000 },
-                            { month: "Apr", cost: 12200 },
-                            { month: "May", cost: 12400 },
-                            { month: "Jun", cost: 12500 },
-                          ]}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="month" />
-                          <YAxis />
-                          <Tooltip formatter={(value) => `₹${value}`} />
-                          <Legend />
-                          <Line
-                            type="monotone"
-                            dataKey="cost"
-                            stroke="#005BEA"
-                            strokeWidth={2.5}
-                            dot={{ r: 5 }}
-                            name="Monthly Cost (₹)"
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
+            </>
           )}
 
-          {/* Analytics Tab */}
-          {activeTab === "analytics" && (
+          {/* PREMIUM PREDICTOR */}
+          {activeTab === "premium" && (
             <div className="space-y-6">
               <Card>
                 <CardHeader>
@@ -856,8 +460,37 @@ export function DashboardPage({ onNavigate }) {
                             cx="50%"
                             cy="50%"
                             outerRadius={120}
-                            fill="#005BEA"
-                            label={({ name, value }) => `${name}: ₹${value}`}
+                            label={({
+                              cx,
+                              cy,
+                              midAngle,
+                              innerRadius,
+                              outerRadius,
+                              name,
+                              value,
+                            }) => {
+                              const RADIAN = Math.PI / 180;
+                              const radius =
+                                innerRadius + (outerRadius - innerRadius) * 0.6;
+                              const x =
+                                cx + radius * Math.cos(-midAngle * RADIAN);
+                              const y =
+                                cy + radius * Math.sin(-midAngle * RADIAN);
+
+                              return (
+                                <text
+                                  x={x}
+                                  y={y}
+                                  textAnchor="middle"
+                                  dominantBaseline="central"
+                                  fill="#ffffff"
+                                  fontSize={8} // 🔥 change size here
+                                  fontWeight={500}
+                                >
+                                  {`${name}: ₹${value}`}
+                                </text>
+                              );
+                            }}
                           >
                             <Cell fill="#005BEA" />
                             <Cell fill="#0078F0" />
@@ -866,6 +499,7 @@ export function DashboardPage({ onNavigate }) {
                             <Cell fill="#6BD6FF" />
                             <Cell fill="#B3E5FF" />
                           </Pie>
+
                           <Tooltip
                             formatter={(value) => [`₹${value}`, "Premium"]}
                             contentStyle={{ borderRadius: "8px" }}
@@ -879,7 +513,7 @@ export function DashboardPage({ onNavigate }) {
             </div>
           )}
 
-          {/* Settings Tab */}
+          {/* SETTINGS */}
           {activeTab === "settings" && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <Card className="lg:col-span-1">
@@ -956,6 +590,19 @@ export function DashboardPage({ onNavigate }) {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ---------- Small Reusable Input ---------- */
+function InputField({ label, id, formData, setFormData }) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <Input
+        value={formData[id]}
+        onChange={(e) => setFormData({ ...formData, [id]: e.target.value })}
+      />
     </div>
   );
 }
